@@ -1,5 +1,7 @@
 # Noah-zero
 
+[Read this document in 简体中文](./README_zh-CN.md)
+
 A highly customizable personal homepage with dual-mode (light/dark) dynamic backgrounds.
 
  ![License: CC BY-NC-SA 4.0](https://img.shields.io/badge/license-CC%20BY--NC--SA%204.0-lightgrey.svg)

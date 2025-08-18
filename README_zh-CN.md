@@ -1,5 +1,7 @@
 # **Noah-zero**
 
+[View this document in English](./README.md)
+
 
   <img src="https://img.shields.io/badge/license-CC%20BY--NC--SA%204.0-lightgrey.svg" alt="许可协议: CC BY-NC-SA 4.0">
 

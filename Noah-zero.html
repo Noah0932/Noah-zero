@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale-1.0">
+    <title>Noah - 运维工程师 @ 蓝天新世界</title>
+    <link rel="icon" href="https://cdn.tulan.cyou/noah/2025/08/06/bitbug_favicon.ico" type="image/x-icon">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        :root {
+            --card-background: rgba(27, 27, 38, 0.65); --body-bg-1: #000000; --body-bg-2: #020024; --body-bg-3: #2d0b49; --primary-accent-color: #00bfff; --text-primary: #f0f6fc; --text-secondary: #b0b8c4; --skill-tag-bg: rgba(56, 62, 86, 0.6); --border-color: rgba(255, 255, 255, 0.15); --footer-text-color: rgba(255, 255, 255, 0.5); --theme-icon-color: #b0b8c4; --hover-bg: rgba(56, 62, 86, 0.8);
+            --glow-accent-color-1: rgba(0, 191, 255, 0.5); --glow-accent-color-2: rgba(158, 0, 255, 0.3);
+        }
+        body.light-mode {
+            --card-background: #FFFFFF; --body-bg-1: #F8F9FA; --body-bg-2: #F8F9FA; --body-bg-3: #F8F9FA; --primary-accent-color: #4A80F0; --text-primary: #2D3748; --text-secondary: #718096; --skill-tag-bg: #F7FAFC; --border-color: #E2E8F0; --footer-text-color: #A0AEC0; --theme-icon-color: #718096; --hover-bg: #EDF2F7;
+            --glow-accent-color-1: rgba(74, 128, 240, 0.3); --glow-accent-color-2: rgba(108, 99, 255, 0.15);
+        }
+         * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        /* 布局终极解决方案 */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--body-bg-1);
+            background-image: linear-gradient(135deg, var(--body-bg-1), var(--body-bg-2), var(--body-bg-3));
+            color: var(--text-primary);
+            display: flex; /* 关键：将body设为flex容器 */
+            min-height: 100vh;
+            padding: 40px 20px;
+            overflow-x: hidden;
+            position: relative;
+            transition: background-color 0.5s ease;
+        }
+        
+        body:not(.light-mode) { background-size: 400% 400%; animation: gradient-animation 10s ease infinite; }
+        body.light-mode { background-image: none; }
+        @keyframes gradient-animation { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+        
+        #dynamic-canvas { position: fixed; top: 0; left: 0; z-index: 1; pointer-events: none; }
+
+        .profile-card {
+            /* 关键：使用 margin: auto 在flex容器中实现完美的、安全的居中 */
+            margin: auto; 
+            
+            background-color: var(--card-background); backdrop-filter: blur(12px); border-radius: 20px; box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2); max-width: 700px; width: 100%; padding: 40px; text-align: center; border: 1px solid var(--border-color); position: relative; z-index: 10; overflow: hidden;  transition: background-color 0.5s ease, border-color 0.5s ease, box-shadow 0.5s ease; animation: card-enter 0.8s 0.2s cubic-bezier(0.25, 1, 0.5, 1) forwards; opacity: 0; transform: scale(0.95);
+        }
+        /* ... 其他所有CSS保持不变 ... */
+        body.light-mode .profile-card { backdrop-filter: none; -webkit-backdrop-filter: none; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.03); }
+        @keyframes card-enter { to { opacity: 1; transform: scale(1); } }
+        .profile-card::before { content: ''; position: absolute; width: 400px; height: 400px; background: radial-gradient( circle at center, var(--glow-accent-color-1), var(--glow-accent-color-2), transparent 70% ); opacity: 0; transition: opacity 0.5s ease; top: var(--mouse-y, 0); left: var(--mouse-x, 0); transform: translate(-50%, -50%); pointer-events: none; }
+        .profile-card:hover::before { opacity: 0.25; }
+        @keyframes fade-in-up { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .avatar, .name, .title, .about, .projects-section, .skills-section, .contact-section, footer { opacity: 0; animation: fade-in-up 0.6s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
+        .avatar { animation-delay: 0.5s; }
+        .name { animation-delay: 0.6s; }
+        .title { animation-delay: 0.7s; }
+        .about { animation-delay: 0.8s; }
+        .projects-section { animation-delay: 0.9s; }
+        .skills-section { animation-delay: 1.0s; }
+        .contact-section { animation-delay: 1.1s; }
+        footer { animation-delay: 1.2s; }
+        .avatar { width: 120px; height: 120px; border-radius: 50%; border: 4px solid var(--primary-accent-color); object-fit: cover; margin-bottom: 20px; box-shadow: 0 0 15px var(--primary-accent-color); transition: transform 0.3s ease-in-out, border-color 0.5s ease, box-shadow 0.5s ease; }
+        .avatar:hover { transform: scale(1.08) rotate(5deg); }
+        .name { font-size: 2.5rem; font-weight: 700; color: var(--text-primary); margin: 0; letter-spacing: 1px; transition: color 0.5s ease, text-shadow 0.5s ease; }
+        .name { text-shadow: 0 0 10px rgba(0, 191, 255, 0.3); }
+        body.light-mode .name { text-shadow: none; }
+        .title { font-size: 1.1rem; font-weight: 400; color: var(--primary-accent-color); margin-top: 10px; margin-bottom: 25px; transition: color 0.5s ease; }
+        .about { font-size: 1rem; line-height: 1.8; font-weight: 300; color: var(--text-secondary); margin-bottom: 35px; transition: color 0.5s ease; }
+        .projects-section, .skills-section { margin-bottom: 40px; }
+        h3 { font-size: 1rem; font-weight: 600; color: var(--text-primary); margin-bottom: 20px; text-transform: uppercase; letter-spacing: 2px; transition: color 0.5s ease; }
+        .skills-container { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; }
+        .skill-tag { background-color: var(--skill-tag-bg); color: var(--text-secondary); padding: 8px 18px; border-radius: 20px; font-size: 0.9rem; font-weight: 400; border: 1px solid var(--border-color); transition: all 0.2s ease-in-out; }
+        .skill-tag:hover { background-color: var(--primary-accent-color); color: #ffffff; border-color: var(--primary-accent-color); transform: translateY(-4px); box-shadow: 0 5px 10px rgba(74, 128, 240, 0.3); }
+        .skill-tag:active { transform: translateY(-2px) scale(0.98); }
+        .projects-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+        .project-card { display: flex; flex-direction: column; align-items: flex-start; background: var(--skill-tag-bg); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--text-primary); border: 1px solid var(--border-color); transition: all 0.2s ease-in-out; text-align: left; }
+        .project-card:hover { transform: translateY(-5px); border-color: var(--primary-accent-color); box-shadow: 0 8px 20px rgba(74, 128, 240, 0.15); }
+        .project-card:active { transform: translateY(-2px) scale(0.99); }
+        .project-icon-wrapper { width: 40px; height: 40px; border-radius: 50%; background-color: rgba(74, 128, 240, 0.1); display: flex; justify-content: center; align-items: center; margin-bottom: 15px; box-shadow: none; flex-shrink: 0; }
+        .project-icon-wrapper i { font-size: 1.2rem; color: var(--primary-accent-color); }
+        .project-card-title { font-weight: 600; font-size: 1.1rem; margin-bottom: 8px; }
+        .project-card-desc { font-size: 0.9rem; font-weight: 300; color: var(--text-secondary); line-height: 1.6; }
+        .contact-section { padding-top: 30px; margin-top: 40px; border-top: 1px solid var(--border-color); transition: border-color 0.5s ease; }
+        .contact-links { display: flex; justify-content: center; gap: 30px; }
+        .contact-links a { color: var(--text-secondary); font-size: 1.8rem; text-decoration: none; transition: all 0.3s ease-in-out; }
+        .contact-links a:hover { color: var(--primary-accent-color); transform: scale(1.2) translateY(-2px); }
+        footer { margin-top: 30px; padding-top: 20px; border-top: 1px solid var(--border-color); font-size: 0.8rem; font-weight: 300; display: flex; flex-direction: column; align-items: center; gap: 8px; transition: border-color 0.5s ease; }
+        footer p, footer a { color: var(--footer-text-color); text-decoration: none; transition: color 0.3s ease; }
+        footer a:hover { color: var(--primary-accent-color); }
+        .toast-notification { position: fixed; top: 20px; right: 20px; background-color: var(--card-background); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); color: var(--text-primary); padding: 15px 25px; border-radius: 12px; border: 1px solid var(--border-color); box-shadow: 0 5px 20px rgba(0,0,0,0.1); z-index: 1001; display: flex; align-items: center; gap: 15px; font-size: 0.95rem; transform: translateX(calc(100% + 30px)); transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1); }
+        body.light-mode .toast-notification { backdrop-filter: none; -webkit-backdrop-filter: none; }
+        .toast-notification.show { transform: translateX(0); }
+        .toast-notification i { color: var(--primary-accent-color); font-size: 1.2rem; }
+        .theme-toggle { position: absolute; top: 25px; right: 25px; width: 40px; height: 40px; background-color: transparent; border-radius: 50%; display: flex; justify-content: center; align-items: center; cursor: pointer; z-index: 11; transition: all 0.3s ease; }
+        .theme-toggle:hover { transform: scale(1.15); background-color: var(--hover-bg); }
+        .theme-toggle i { font-size: 1.2rem; color: var(--theme-icon-color); transition: opacity 0.3s ease, transform 0.4s ease; position: absolute; }
+        .theme-toggle .icon-sun { opacity: 0; transform: translateY(-10px) rotate(-90deg); }
+        .theme-toggle .icon-moon { opacity: 1; transform: translateY(0) rotate(0); }
+        body.light-mode .theme-toggle .icon-sun { opacity: 1; transform: translateY(0) rotate(0); }
+        body.light-mode .theme-toggle .icon-moon { opacity: 0; transform: translateY(10px) rotate(90deg); }
+        
+        @media (max-width: 768px) {
+            body { 
+                padding: 20px;
+                /* 移除了 align-items: flex-start; 因为 margin: auto 会自动处理 */
+                -webkit-tap-highlight-color: transparent;
+            }
+            .profile-card { 
+                padding: 30px 25px;
+                margin: 20px 0; /* 在移动端提供一个基础的上下边距 */
+            } 
+            .name { font-size: 2rem; }
+            .projects-grid { grid-template-columns: 1fr; } 
+            .toast-notification { left: 20px; right: 20px; top: 10px; transform: translateY(calc(-100% - 30px)); }
+            .toast-notification.show { transform: translateY(0); }
+            .theme-toggle { top: 20px; right: 20px; }
+        }
+        
+        @media (min-width: 769px) {
+            #dynamic-canvas {
+                pointer-events: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    
+    <canvas id="dynamic-canvas"></canvas>
+    
+    <div class="profile-card">
+        <!-- HTML和JS与上一版完全相同，这里为简洁省略 -->
+        <div class="theme-toggle" id="theme-toggle" title="切换亮色/暗色模式"><i class="fas fa-moon icon-moon"></i><i class="fas fa-sun icon-sun"></i></div><img src="https://cdn.tulan.cyou/noah/2025/07/26/b_5255bd8e31082e2a4332c4eb4172686e.jpg" alt="Noah's Avatar" class="avatar"><h1 class="name">Noah</h1><h2 class="title">运维工程师 @ 蓝天新世界团队</h2><p class="about">热衷于构建稳定、高效、可扩展的云原生系统。坚信自动化与好的工具有改变世界的力量。</p><div class="projects-section"><h3>我的项目</h3><div class="projects-grid"><a href="https://blog.noah0932.top" target="_blank" class="project-card"><span class="project-icon-wrapper"><i class="fas fa-feather-alt"></i></span><div><div class="project-card-title">个人博客</div><p class="project-card-desc">记录技术心得与运维实践。</p></div></a><a href="https://ai.noah0932.top" target="_blank" class="project-card"><span class="project-icon-wrapper"><i class="fas fa-robot"></i></span><div><div class="project-card-title">AI工具站</div><p class="project-card-desc">探索前沿AI技术的应用。</p></div></a><a href="https://it-tools.noah0932.top" target="_blank" class="project-card"><span class="project-icon-wrapper"><i class="fas fa-toolbox"></i></span><div><div class="project-card-title">IT百宝箱</div><p class="project-card-desc">为IT人士打造的在线工具集。</p></div></a><a href="https://music.noah0932.top" target="_blank" class="project-card"><span class="project-icon-wrapper"><i class="fas fa-music"></i></span><div><div class="project-card-title">在线音乐播放器</div><p class="project-card-desc">探索Web多媒体技术。</p></div></a></div></div><div class="skills-section"><h3>核心技能栈</h3><div class="skills-container"><span class="skill-tag">Kubernetes</span><span class="skill-tag">Docker</span><span class="skill-tag">AWS & 阿里云</span><span class="skill-tag">Terraform</span><span class="skill-tag">CI/CD</span><span class="skill-tag">Prometheus</span><span class="skill-tag">Python & Bash</span><span class="skill-tag">Next.js</span></div></div><div class="contact-section"><div class="contact-links"><a href="mailto:noah@noah0932.top" target="_blank" title="邮件联系"><i class="fas fa-envelope"></i></a><a href="https://github.com/Noah0932" target="_blank" title="查看 GitHub"><i class="fab fa-github"></i></a><a href="tencent://message/?uin=2026661471&Site=Noah'sHomepage&Menu=yes" target="_blank" title="QQ联系"><i class="fab fa-qq"></i></a></div></div><footer><p>&copy; 2024 Noah · 蓝天新世界</p><a href="https://beian.miit.gov.cn/" target="_blank">皖ICP备2025092209号</a></footer>
+    </div>
+    
+    <script>
+        (function() { const savedTheme = localStorage.getItem('theme'); if (savedTheme) { if (savedTheme === 'light') document.body.classList.add('light-mode'); } else { const hour = new Date().getHours(); if (hour >= 6 && hour < 18) document.body.classList.add('light-mode'); } })(); const particleEngine = (function() { let canvas, ctx, particles, mouse, animationFrameId, currentTheme; const lightThemeOptions = { particleColor: "rgba(172, 185, 203, 0.7)", lineColor: "rgba(172, 185, 203, 0.3)", particleAmount: 50, defaultRadius: 2, variantRadius: 2, defaultSpeed: 0.5, variantSpeed: 0.5, linkRadius: 180, gravitational: false }; const darkThemeOptions = { particleColor: "rgba(255, 255, 255, 0.8)", lineColor: "rgba(255, 255, 255, 0.15)", particleAmount: 250, defaultRadius: 0.8, variantRadius: 1.2, defaultSpeed: 0.3, variantSpeed: 0.5, linkRadius: 120, gravitational: true, gravityRadius: 60 }; let options = {}; function init(theme) { canvas = document.getElementById('dynamic-canvas'); if (!canvas) return; ctx = canvas.getContext('2d'); setTheme(theme); resizeCanvas(); particles = []; for (let i = 0; i < options.particleAmount; i++) { particles.push(new Particle()); } mouse = { x: -9999, y: -9999, radius: 150 }; window.addEventListener('resize', resizeCanvas); const updateMousePos = (e) => { const event = e.touches ? e.touches[0] : e; mouse.x = event.clientX; mouse.y = event.clientY; }; window.addEventListener('mousemove', updateMousePos); window.addEventListener('touchmove', updateMousePos); const resetMousePos = () => { mouse.x = -9999; mouse.y = -9999; }; window.addEventListener('mouseleave', resetMousePos); window.addEventListener('touchend', resetMousePos); } function setTheme(theme) { currentTheme = theme; options = (theme === 'light') ? lightThemeOptions : darkThemeOptions; } function Particle() { this.x = Math.random() * canvas.width; this.y = Math.random() * canvas.height; const speed = options.defaultSpeed + Math.random() * options.variantSpeed; this.vx = (Math.random() - 0.5) * speed; this.vy = (Math.random() - 0.5) * speed; this.radius = options.defaultRadius + Math.random() * options.variantRadius; } Particle.prototype.update = function() { if (options.gravitational) { const dx = mouse.x - this.x; const dy = mouse.y - this.y; const dist = Math.sqrt(dx * dx + dy * dy); if (dist < mouse.radius) { const force = (mouse.radius - dist) / mouse.radius; this.vx += (dx / dist) * force * 0.1; this.vy += (dy / dist) * force * 0.1; } } this.x += this.vx; this.y += this.vy; this.vx *= 0.99; this.vy *= 0.99; if (this.x < -this.radius) this.x = canvas.width + this.radius; if (this.x > canvas.width + this.radius) this.x = -this.radius; if (this.y < -this.radius) this.y = canvas.height + this.radius; if (this.y > canvas.height + this.radius) this.y = -this.radius; }; Particle.prototype.draw = function() { ctx.beginPath(); ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2); if (currentTheme === 'dark') { ctx.shadowColor = options.particleColor; ctx.shadowBlur = 8; } ctx.fillStyle = options.particleColor; ctx.fill(); ctx.shadowBlur = 0; }; function processParticles() { for (let i = 0; i < particles.length; i++) { particles[i].update(); particles[i].draw(); for (let j = i + 1; j < particles.length; j++) { const p1 = particles[i]; const p2 = particles[j]; const dist = Math.sqrt(Math.pow(p1.x - p2.x, 2) + Math.pow(p1.y - p2.y, 2)); if (dist < options.linkRadius) { const opacity = 1 - dist / options.linkRadius; ctx.strokeStyle = options.lineColor; ctx.lineWidth = 0.5; ctx.globalAlpha = opacity; ctx.beginPath(); ctx.moveTo(p1.x, p1.y); ctx.lineTo(p2.x, p2.y); ctx.stroke(); } if (options.gravitational && dist < options.gravityRadius) { const force = (options.gravityRadius - dist) / options.gravityRadius; const dx = p2.x - p1.x; const dy = p2.y - p1.y; p1.vx += (dx/dist) * force * 0.005; p1.vy += (dy/dist) * force * 0.005; p2.vx -= (dx/dist) * force * 0.005; p2.vy -= (dy/dist) * force * 0.005; } } } ctx.globalAlpha = 1; } function animate() { ctx.clearRect(0, 0, canvas.width, canvas.height); processParticles(); animationFrameId = requestAnimationFrame(animate); } function resizeCanvas() { if(!canvas) return; canvas.width = window.innerWidth; canvas.height = window.innerHeight; } return { start: function(theme) { if(!canvas) init(theme); if (animationFrameId) cancelAnimationFrame(animationFrameId); setTheme(theme); particles = []; for (let i = 0; i < options.particleAmount; i++) { particles.push(new Particle()); } animate(); } }; })();
+        window.addEventListener('load', () => { const currentTheme = document.body.classList.contains('light-mode') ? 'light' : 'dark'; particleEngine.start(currentTheme); const card=document.querySelector('.profile-card');if(card){card.addEventListener('mousemove',(e)=>{const rect=card.getBoundingClientRect();const x=e.clientX-rect.left;const y=e.clientY-rect.top;card.style.setProperty('--mouse-x',`${x}px`);card.style.setProperty('--mouse-y',`${y}px`);});} const tencentKey = 'YOUR_TENCENT_KEY';const getGreetingParts=()=>{const hour=(new Date).getHours();if(hour>=0&&hour<=5)return{core:"夜深了",full:"睡不着吗，熬夜对身体不好哦(∪.∪ )...zzz"};if(hour>5&&hour<=10)return{core:"早上好",full:"早上好，今天也要元气满满哦( •̀ ω •́ )y"};if(hour>10&&hour<=14)return{core:"中午好",full:"中午好，干饭时间到了 (￣﹃￣)"};if(hour>14&&hour<=18)return{core:"下午好",full:"下午好，来杯下午茶吧~ヾ(•ω•`)o"};return{core:"晚上好",full:"晚上好，今天过得怎么样呢(～￣▽￣)～"};};const showToast=(text)=>{const toast=document.createElement('div');toast.className='toast-notification';toast.innerHTML=`<i class="fas fa-satellite-dish"></i><span>${text}</span>`;document.body.appendChild(toast);setTimeout(()=>{toast.classList.add('show')},100);setTimeout(()=>{toast.classList.remove('show');toast.addEventListener('transitionend',()=>{if(toast.parentNode){toast.parentNode.removeChild(toast)}})},5000);};const greetingParts=getGreetingParts();const fallbackGreeting=()=>showToast(greetingParts.full);const getLocationGreeting=()=>{ if (tencentKey === 'YOUR_TENCENT_KEY') { console.warn("Tencent API Key not set. Skipping location greeting."); return fallbackGreeting(); } const script=document.createElement('script');window.handleLocationResponse=(data)=>{if(data&&data.status===0&&data.result){const city=data.result.ad_info.city.replace('市','');showToast(`来自${city}的朋友，${greetingParts.core}！`)}else{fallbackGreeting()}document.body.removeChild(script);delete window.handleLocationResponse};script.src=`https://apis.map.qq.com/ws/location/v1/ip?key=${tencentKey}&output=jsonp&callback=handleLocationResponse`;script.onerror=()=>{fallbackGreeting();document.body.removeChild(script);delete window.handleLocationResponse};document.body.appendChild(script);setTimeout(()=>{if(window.handleLocationResponse){fallbackGreeting()}},4000)};setTimeout(()=>{getLocationGreeting()},1500); const themeToggle = document.getElementById('theme-toggle'); if (themeToggle) { themeToggle.addEventListener('click', () => { document.body.classList.toggle('light-mode'); const newTheme = document.body.classList.contains('light-mode') ? 'light' : 'dark'; localStorage.setItem('theme', newTheme); particleEngine.start(newTheme); }); } });
+    </script>
+</body>
+</html>

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- 页面标题会由JS根据config.js动态设置 -->
+    <title>正在加载...</title>
+    <link rel="icon" href="https://cdn.tulan.cyou/noah/2025/08/06/bitbug_favicon.ico" type="image/x-icon">
+    <!-- 链接到唯一的样式文件 -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <!-- 背景动画画布 -->
+    <canvas id="dynamic-canvas"></canvas>
+
+    <!-- 主内容卡片：所有内容占位符都带有ID，供JS填充 -->
+    <div class="profile-card">
+        <div class="theme-toggle" id="theme-toggle" title="切换亮色/暗色模式">
+            <i class="fas fa-moon icon-moon"></i>
+            <i class="fas fa-sun icon-sun"></i>
+        </div>
+        
+        <!-- 个人信息区域 -->
+        <img src="" alt="头像" class="avatar" id="avatar">
+        <h1 class="name" id="name"></h1>
+        <h2 class="title" id="title"></h2>
+        <p class="about" id="description"></p>
+        
+        <!-- 项目展示区域 -->
+        <div class="projects-section">
+            <h3>我的项目</h3>
+            <div class="projects-grid">
+                <a id="project-blog" href="#" target="_blank" class="project-card">
+                    <span class="project-icon-wrapper"><i class="fas fa-feather-alt"></i></span>
+                    <div>
+                        <div class="project-card-title" id="project-blog-title"></div>
+                        <p class="project-card-desc" id="project-blog-desc"></p>
+                    </div>
+                </a>
+                <a id="project-ai" href="#" target="_blank" class="project-card">
+                    <span class="project-icon-wrapper"><i class="fas fa-robot"></i></span>
+                    <div>
+                        <div class="project-card-title" id="project-ai-title"></div>
+                        <p class="project-card-desc" id="project-ai-desc"></p>
+                    </div>
+                </a>
+                <a id="project-toolbox" href="#" target="_blank" class="project-card">
+                    <span class="project-icon-wrapper"><i class="fas fa-toolbox"></i></span>
+                    <div>
+                        <div class="project-card-title" id="project-toolbox-title"></div>
+                        <p class="project-card-desc" id="project-toolbox-desc"></p>
+                    </div>
+                </a>
+                <a id="project-music" href="#" target="_blank" class="project-card">
+                    <span class="project-icon-wrapper"><i class="fas fa-music"></i></span>
+                    <div>
+                        <div class="project-card-title" id="project-music-title"></div>
+                        <p class="project-card-desc" id="project-music-desc"></p>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        <!-- 技能栈区域 (这部分内容相对固定，因此保留在HTML中) -->
+        <div class="skills-section">
+            <h3>核心技能栈</h3>
+            <div class="skills-container">
+                <span class="skill-tag">Kubernetes</span><span class="skill-tag">Docker</span><span class="skill-tag">AWS & 阿里云</span><span class="skill-tag">Terraform</span><span class="skill-tag">CI/CD</span><span class="skill-tag">Prometheus</span><span class="skill-tag">Python & Bash</span><span class="skill-tag">Next.js</span>
+            </div>
+        </div>
+        
+        <!-- 联系方式区域 -->
+        <div class="contact-section">
+            <div class="contact-links">
+                <a id="email-link" href="#" target="_blank" title="邮件联系"><i class="fas fa-envelope"></i></a>
+                <a id="github-link" href="#" target="_blank" title="查看 GitHub"><i class="fab fa-github"></i></a>
+                <a id="qq-link" href="#" target="_blank" title="QQ联系"><i class="fab fa-qq"></i></a>
+            </div>
+        </div>
+        
+        <!-- 页脚区域 -->
+        <footer>
+            <p id="copyright-text"></p>
+            <a id="icp-link" href="https://beian.miit.gov.cn/" target="_blank"></a>
+        </footer>
+    </div>
+    
+    <!-- 
+      脚本加载
+      1. defer 属性确保脚本在HTML解析完毕后执行，避免阻塞页面渲染。
+      2. 严格保证 config.js 在 script.js 之前加载并执行。
+    -->
+    <script src="js/config.js" defer></script>
+    <script src="js/script.js" defer></script>
+
+</body>
+</html>

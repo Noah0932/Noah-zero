@@ -9,7 +9,7 @@
 
   <img src="https://img.shields.io/badge/dependencies-none-brightgreen.svg" alt="依赖: 无">
 
-Noah-zero 是一个轻量级、无任何外部依赖的个人主页项目，其特色为两种不同的、基于 Canvas 的交互式动态背景。项目采用原生 HTML、CSS 和 JavaScript 构建，专注于性能、视觉美学与健壮的响应式布局。
+Noah-zero 是一个轻量级、无任何外部依赖的个人主页项目，其特色为两种不同的、基于 Canvas 的交互式动态背景。项目采用原生 HTML、CSS 和 JavaScript 构建，专注于性能、视觉美学与健壮的响应式布局。(本项目所有依赖均调至本地，并且支持快速更改相关配置)
 
 [查看在线演示](https://noah0932.top)
 
@@ -29,8 +29,8 @@ Noah-zero 是一个轻量级、无任何外部依赖的个人主页项目，其�
 
 - **双模式主题**: 支持亮色与暗色模式，提供手动切换开关，并能根据系统时间自动检测。主题由 CSS 变量管理，易于维护和扩展。
 - 交互式动态背景
-  - **亮色模式**: 随鼠标牵引的交互式粒子网络。
-  - **暗色模式**: 拥有粒子间引力的、自演化的星尘宇宙。
+  - **亮色模式**: 拥有粒子间引力的、自演化的星尘宇宙。
+  - **暗色模式**: 随鼠标牵引的交互式粒子网络、自演化的星尘宇宙。
 - **响应式设计**:完美适配桌面和移动设备。
 - **纯粹原生**: 仅使用原生HTML, CSS, JavaScript，无需任何框架。
 - **高度可定制**: 清晰的代码结构和注释，方便你打造属于自己的主页。
@@ -51,10 +51,18 @@ Noah-zero 是一个轻量级、无任何外部依赖的个人主页项目，其�
 
 ## 🎨项目结构
 
-为保持简洁和可移植性，项目被有意地整合在单个文件中。
+为保持简洁和可移植性，<font color=red>~~项目被有意地整合在单个文件中（bushi~~</font>，配置的话直接更改<font color=red>js/config.js</font>就行
 ```js
 
-. └── index.html      # 包含所有 HTML, CSS, และ JavaScript
+./
+├── index.html              # 页面结构骨架
+├── css/
+│   └── style.css           # 包含所有样式
+├── js/
+│   ├── config.js           # 存放所有可配置内容的核心文件
+│   └── script.js           # 驱动页面的主逻辑脚本
+└── webfonts/
+└── (字体文件...)    # 包含所有字体
 
 ```
 
@@ -64,25 +72,28 @@ Noah-zero 是一个轻量级、无任何外部依赖的个人主页项目，其�
 
 ## 🔧 自定义指南
 
-你可以在`index.html`文件中，通过搜索以下关键字，快速定位并修改核心内容
+你可以在**`config.js`**文件中，通过搜索以下关键字，快速定位并修改核心内容
 
-### 1. 内容配置
+### 1. 内容配置`
 
-通过搜索 `[CONFIG]` 注释标签，快速定位并修改页面内容。
+通过搜索注释标签，可快速定位并修改页面内容。
 
-| 标签                        | 描述                               |
-| :-------------------------- | :--------------------------------- |
-| `[CONFIG] 1. FAVICON`       | 浏览器标签页图标 (`favicon.ico`)。 |
-| `[CONFIG] 2. AVATAR`        | 个人主头像的 URL。                 |
-| `[CONFIG] 3. PERSONAL INFO` | 姓名、头衔和个人简介段落。         |
-| `[CONFIG] 4. PROJECTS`      | 项目卡片、链接、图标和描述。       |
-| `[CONFIG] 5. SKILLS`        | 技能章节中列出的技能标签。         |
-| `[CONFIG] 6. CONTACT LINKS` | 社交媒体和联系方式的图标链接。     |
-| `[CONFIG] 7. FOOTER`        | 版权、备案号及其他页脚文本。       |
+| 标签                      | 描述                             |
+| :------------------------ | :------------------------------- |
+| `FAVICON(在index.html里)` | 浏览器标签页图标 (`favicon.ico`) |
+| `AVATAR_URL`              | 个人主头像的 URL                 |
+| `NAME`                    | 你的昵称                         |
+| `TITLE`                   | 你的头衔                         |
+| `DESCRIPTION`             | 你的个人简介                     |
+| `PROJECTS`                | 项目卡片、链接、图标和描述       |
+| `SKILLS(在index.html里)`  | 技能章节中列出的技能标签         |
+| `API`                     | 腾讯地图IP定位API密钥            |
+| `CONTACT`                 | 联系方式                         |
+| `FOOTER`                  | 版权、备案号及其他页脚文本       |
 
 ### 2. 动画参数
 
-背景动画的行为可在 `<script>` 部分的 `⚙️ CUSTOMIZABLE PARAMETERS` 注释下进行微调。
+背景动画的行为可在 `script.js` 的 `⚙️模块2 下进行微调。
 
 `lightThemeOptions` 和 `darkThemeOptions` 对象分别控制其对应的视觉模式。
 
@@ -104,13 +115,21 @@ Noah-zero 是一个轻量级、无任何外部依赖的个人主页项目，其�
 
 2. 配置密钥
 
-   ```javascript
-   const tencentKey = 'YOUR_TENCENT_KEY';
+   ```tiki wiki
+   在config.js里添加就行了
    ```
 
 将`'YOUR_TENCENT_KEY'`替换为你在[腾讯位置服务](https://lbs.qq.com/)申请的免费密钥
 
 如果你不希望使用此功能，**只需删除`setTimeout(()=>{getLocationGreeting()},1500);`这一行代码即可。**
+
+### 4. 问候语系统
+
+问候语系统非常灵活，支持基于时间、特定城市和通用模板的三层逻辑。
+
+- **特定城市问候**: 在 `LOCATION_SPECIFIC` 对象中为你想要的城市添加专属问候。
+- **通用模板**: 修改 `LOCATION_FOUND_TEMPLATE` 来自定义通用问候语的格式。 `"{city}"` 和 `"{time_greeting}"` 是占位符。
+- **兜底方案**: 修改 `API_FAIL_FALLBACK` 作为无法获取地理位置时的默认问候。
 
 ##  🎞许可协议
 

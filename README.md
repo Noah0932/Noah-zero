@@ -1,7 +1,5 @@
 # **Noah-zero**
-
 ---
-
 [简体中文文档](./README_zh-CN.md)
 
 [![License: CC BY-NC-SA 4.0](https://img.shields.io/badge/license-CC%20BY--NC--SA%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by-nc-sa/4.0/)
@@ -138,5 +136,6 @@ Under the following terms:
 [View Full License Text](http://creativecommons.org/licenses/by-nc-sa/4.0/)
 
 ## 🤝 Contributing
+
 
 Contributions of any kind are welcome. Feel free to open an Issue to report bugs or suggest features, or submit a Pull Request to improve the code.
